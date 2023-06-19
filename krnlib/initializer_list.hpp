@@ -7,7 +7,7 @@
 #pragma once
 #include <type_traits>
 #include <utility>
-#include <krnlib/memory>
+#include <krnlib/memory.hpp>
 
 namespace krnlib
 {

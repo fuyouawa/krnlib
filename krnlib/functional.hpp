@@ -1,5 +1,5 @@
 #pragma once
-#include <krnlib/memory>
+#include <krnlib/memory.hpp>
 #include <type_traits>
 
 namespace krnlib
@@ -150,8 +150,8 @@ private:
 };
 
 /*
-使用SFINAE, 根据T的类型选择对应的实现路径
-如果无法转换成RetT(ArgsT...), 则会触发编译期错误
+* 使用SFINAE, 根据T的类型选择对应的实现路径
+* 如果无法转换成RetT(ArgsT...), 则会触发编译期错误
 */
 template <class T>
 struct GetFunctionImpl {

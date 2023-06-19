@@ -1,6 +1,6 @@
 #include <ntifs.h>
-#include <krnlib/initializer_list>
-#include <krnlib/functional>
+#include <krnlib/initializer_list.hpp>
+#include <krnlib/functional.hpp>
 
 void DriverUnload(PDRIVER_OBJECT pDriverObject)
 {

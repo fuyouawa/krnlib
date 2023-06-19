@@ -111,9 +111,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functional" />
-    <ClInclude Include="initializer_list" />
-    <ClInclude Include="memory" />
+    <ClInclude Include="functional.hpp" />
+    <ClInclude Include="initializer_list.hpp" />
+    <ClInclude Include="memory.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

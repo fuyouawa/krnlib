@@ -24,13 +24,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functional">
+    <ClInclude Include="functional.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="initializer_list">
+    <ClInclude Include="initializer_list.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="memory">
+    <ClInclude Include="memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
