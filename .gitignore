@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/krnlib/x64/Debug
+/.vs/krnlib
+/x64/Debug
