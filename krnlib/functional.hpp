@@ -1,18 +1,15 @@
 #pragma once
-#include <krnlib/memory.hpp>
+#include "krnlib/memory.hpp"
 #include <type_traits>
 
-namespace krnlib
-{
-namespace detail
-{
+namespace krnlib {
+namespace details {
 /* ---------------------------------------------------------------------------------------------
 * 1: 将可调用对象封装为一个类, 方便操作
 * 2: 使用类型擦除, 使代码简洁更明了
 --------------------------------------------------------------------------------------------- */
 template <class RetT, class... ArgsT>
-class __declspec(novtable) CallableObjBase
-{
+class __declspec(novtable) CallableObjBase {
 public:
 	/*
 	* 注: 以下说的"自身", 都是子类(实现类)向上转型后的
@@ -33,8 +30,7 @@ public:
 * 这个是FuncBase的实现类, 类型擦除所隐藏的部分
 --------------------------------------------------------------------------------------------- */
 template <class CallableT, class RetT, class... ArgsT>
-class CallableObjImpl : public CallableObjBase<RetT, ArgsT...>
-{
+class CallableObjImpl : public CallableObjBase<RetT, ArgsT...> {
 public:
 	using InheritedT = CallableObjBase<RetT, ArgsT...>;
 
@@ -69,8 +65,7 @@ private:
 * 2. 使得最外层的类只需要提供一个模板, 自动将模板中的返回值类型和参数列表提取出来
 --------------------------------------------------------------------------------------------- */
 template <class RetT, class... ArgsT>
-class FuncBaseImpl
-{
+class FuncBaseImpl {
 public:
 	using CallableObj = CallableObjBase<RetT, ArgsT...>;
 
@@ -118,8 +113,7 @@ protected:
 
 	// 重置内部的可调用对象
 	template <class CallableT>
-	void AutoReset(CallableT&& call)
-	{
+	void AutoReset(CallableT&& call) {
 		// 获取CallableObjBase的实现类
 		using ImplT = CallableObjImpl<std::decay_t<CallableT>, RetT, ArgsT...>;
 		// 分配内存, 并进行向上转型(类型擦除)
@@ -166,10 +160,9 @@ struct GetFunctionImpl<RetT(ArgsT...)> {
 
 
 template<class CallableT>
-class function : public detail::GetFunctionImpl<CallableT>::Type
-{
+class function : public details::GetFunctionImpl<CallableT>::Type {
 public:
-	using InheritedT = typename detail::GetFunctionImpl<CallableT>::Type;
+	using InheritedT = typename details::GetFunctionImpl<CallableT>::Type;
 
 	function() noexcept {}
 	function(nullptr_t) noexcept {}
