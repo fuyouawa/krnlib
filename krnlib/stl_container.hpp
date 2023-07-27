@@ -1,15 +1,19 @@
+
 #pragma once
 #include <list>
 #include <vector>
 #include <string>
 #include "krnlib/memory.hpp"
 
+/*
+* STLÈÝÆ÷Çý¶¯°æ
+*/
 namespace krnlib {
 template<class T>
-using list = std::list<T, krnlib::default_allocator<T>>;
+using list = std::list<T, krnlib::allocator<T>>;
 template<class T>
-using vector = std::vector<T, krnlib::default_allocator<T>>;
-using string = std::basic_string<char, std::char_traits<char>, krnlib::default_allocator<char>>;
+using vector = std::vector<T, krnlib::allocator<T>>;
+using string = std::basic_string<char, std::char_traits<char>, krnlib::allocator<char>>;
 template <class T>
 using unique_ptr = std::unique_ptr<T, krnlib::default_delete<T>>;
 template <class T>
@@ -40,7 +44,7 @@ std::enable_if_t<!std::is_array_v<T>, shared_ptr<T>>
 shared_ptr<T>
 #endif // _HAS_CXX20
 make_shared(ArgsT&&... args) { // make a shared_ptr to non-array object
-    return std::allocate_shared<T, krnlib::default_allocator>(krnlib::default_allocator(), std::forward<ArgsT>(args)...);
+    return std::allocate_shared<T, krnlib::allocator>(krnlib::allocator(), std::forward<ArgsT>(args)...);
 }
 #pragma endregion
 }

@@ -3,7 +3,6 @@
 
 namespace krnlib {
 namespace details {
-#pragma region 可变模板参数的判断是否相等
 template<class CompareT, class ThisType, class... RestTypes>
 static constexpr bool is_first_type_same_v() {
 	return std::is_same_v<CompareT, ThisType>;
@@ -29,9 +28,7 @@ template<class CompareT>
 static constexpr bool is_only_one_type_and_same_v() {
 	return false;
 }
-#pragma endregion
 
-#pragma region 可变模板参数的判断是否可以转换
 template<class ToT, class ThisFromT, class... RestFromT>
 static constexpr bool is_first_type_convertible_v() {
 	return std::is_convertible_v<ThisFromT, ToT>;
@@ -49,7 +46,6 @@ template<class ToT>
 static constexpr bool is_only_one_type_and_is_convertible_v_v() {
 	return false;
 }
-#pragma endregion
 }
 
 // 判断可变模板参数的第一个参数是否和指定参数相等

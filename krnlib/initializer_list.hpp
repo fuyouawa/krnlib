@@ -1,9 +1,3 @@
-/*
-* 因为在驱动开发中std::initializer_list在涉及到会发生隐式转换的初始化时会报错(c++这个糟老头子肯定悄咪咪夹杂私货了)
-* 所以我自己实现了一个使用方法和std::initializer_list几乎一样的容器
-* 但是缺点就是不能像他那样在编译期就确定好栈中的大小, 而是在运行时动态在堆中分配内存
-*/
-
 #pragma once
 #include <type_traits>
 #include <utility>

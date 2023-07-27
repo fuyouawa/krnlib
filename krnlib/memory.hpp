@@ -9,18 +9,19 @@
 
 namespace krnlib {
 namespace details {
-#pragma region 内部用结构
+// 内存分配类型
 constexpr POOL_TYPE kAllocPoolType = PagedPool;
+// 内存分配Tag
 constexpr ULONG kAllocPoolTag = 'mMuF';
+// 分配数组对象, 内存的结构
 template<class T>
 struct NewArrayMemory {
     size_t count;
     T objs[1];
 };
-#pragma endregion
 }
 
-#pragma region  普通内存操作函数
+#pragma region  Malloc Free Allocate Deallocate Construct Destroy
 inline void* Malloc(size_t size) {
 #ifdef WINNT
     auto ptr = ExAllocatePoolWithTag(details::kAllocPoolType, size, details::kAllocPoolTag);
@@ -61,6 +62,10 @@ inline void Destroy(T* ptr) {
 #pragma endregion
 
 #pragma region New
+/// <summary>
+/// 为一个对象分配内存并构造
+/// </summary>
+/// <param name="args">要传给构造函数的参数</param>
 template<class T, class... ArgsT>
 inline T* New(ArgsT&&... args) {
     auto ptr = Allocate<T>(1);
@@ -68,11 +73,16 @@ inline T* New(ArgsT&&... args) {
     return Construct(ptr, std::forward<ArgsT>(args)...);
 }
 
+/// <summary>
+/// 为一个对象分配数组内存并构造(支持ctor_args可隐式转换为构造类型)
+/// </summary>
+/// <param name="count">数组大小</param>
+/// <param name="ctor_args">数组中每个元素的初始化. 如果大于count, 在Debug模式下会触发断点; 如果小于, 剩下的元素会调用默认构造函数</param>
 template<class ElemT, class... CtorArgsT, std::enable_if_t<!std::is_array_v<ElemT>, int> = 0>
 inline ElemT* NewArrayImplicit(size_t count, CtorArgsT&&... ctor_args) {
     using NewArrayMemoryT = details::NewArrayMemory<ElemT>;
     constexpr size_t ctor_args_count = sizeof...(ctor_args);
-    AssertCheckVariableTypesImplicit<ElemT, CtorArgsT...>();
+    AssertCheckVariableTypesConvertible<ElemT, CtorArgsT...>();
 
     KRNLIB_ASSERT(ctor_args_count <= count);
     if (count == 0) count = 1;
@@ -95,20 +105,31 @@ inline ElemT* NewArrayImplicit(size_t count, CtorArgsT&&... ctor_args) {
     return (ElemT*)array_mem->objs;
 }
 
+/// <summary>
+/// 为一个对象分配数组内存并构造(每个ctor_args必须为构造类型)
+/// </summary>
+/// <param name="count">数组大小</param>
+/// <param name="ctor_args">数组中每个元素的初始化. 如果大于count, 在Debug模式下会触发断点; 如果小于, 剩下的元素会调用默认构造函数</param>
 template<class ElemT, class... CtorElemsT, std::enable_if_t<!std::is_array_v<ElemT>, int> = 0>
 inline ElemT* NewArray(size_t count, CtorElemsT&&... ctor_elems) {
-    AssertCheckVariableTypes<ElemT, CtorElemsT...>();
+    AssertCheckVariableTypesSame<ElemT, CtorElemsT...>();
     return NewArrayImplicit<ElemT>(count, std::forward<CtorElemsT>(ctor_elems)...);
 }
 #pragma endregion
 
 #pragma region delete
+/// <summary>
+/// 释放对象的内存并析构
+/// </summary>
 template<class T>
 inline void Delete(T* ptr) {
     Destroy(ptr);
     Deallocate(ptr);
 }
 
+/// <summary>
+/// 释放每个对象数组元素的内存并析构 (注意必须是由NewArrayImplicit或者NewArray分配的内存)
+/// </summary>
 template<class ElemT, std::enable_if_t<!std::is_array_v<ElemT>, int> = 0>
 inline void DeleteArray(ElemT* ptr) {
     using NewArrayMemoryT = details::NewArrayMemory<ElemT>;
@@ -121,7 +142,7 @@ inline void DeleteArray(ElemT* ptr) {
 #pragma endregion
 
 namespace details {
-#pragma region 内存分配器
+#pragma region allocator
 template <class T>
 class allocator {
 public:
@@ -215,7 +236,7 @@ public:
     };
 #pragma endregion
 
-#pragma region 内存析构器
+#pragma region default_delete
 template <class T>
 struct default_delete { // default deleter for unique_ptr
     constexpr default_delete() noexcept = default;
@@ -246,7 +267,7 @@ struct default_delete<T[]> { // default deleter for unique_ptr to array of unkno
 }
 
 template<class T>
-using default_allocator = details::allocator<T>;
+using allocator = details::allocator<T>;
 template<class T>
 using default_delete = details::default_delete<T>;
 }
