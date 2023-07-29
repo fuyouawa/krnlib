@@ -1,5 +1,4 @@
 #pragma once
-#include "krnlib/functional.hpp"
 #include "krnlib/stl_container.hpp"
 
 namespace krnlib {
@@ -58,11 +57,11 @@ public:
 	using OkT = Ok<T>;
 	using ErrT = Err<E>;
 
-	Result(OkT&& ok) {
+	Result(std::add_rvalue_reference_t<OkT> ok) {
 		ok_ptr_ = make_unique<OkT>(std::move(ok));
 		err_ptr_ = nullptr;
 	}
-	Result(ErrT&& err) {
+	Result(std::add_rvalue_reference_t<ErrT> err) {
 		err_ptr_ = make_unique<ErrT>(std::move(err));
 		ok_ptr_ = nullptr;
 	}
@@ -76,14 +75,30 @@ public:
 		return static_cast<bool>(err_ptr_);
 	}
 
-	std::add_lvalue_reference_t<T> OkVal() {
+	T& OkVal() {
 		static_assert(!OkT::is_empty_v, "The type of 'Ok' is 'Empty', so you cannot retrieve its value!");
 		return ok_ptr_->val_;
 	}
 
-	std::add_lvalue_reference_t<E> ErrVal() {
+	E& ErrVal() {
 		static_assert(!ErrT::is_empty_v, "The type of 'Err' is 'Empty', so you cannot retrieve its value!");
 		return err_ptr_->val_;
+	}
+
+	template<class FuncT, std::enable_if_t<!ErrT::is_empty_v, int> = 0>
+	T& UnwrapOrElse(const FuncT& op) {
+		if (Ok())
+			return OkVal();
+		else
+			return op(ErrVal());
+	}
+
+	template<class FuncT, std::enable_if_t<ErrT::is_empty_v, int> = 0>
+	T& UnwrapOrElse(const FuncT& op) {
+		if (Ok())
+			return OkVal();
+		else
+			return op();
 	}
 
 private:

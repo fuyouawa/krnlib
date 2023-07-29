@@ -4,9 +4,6 @@
     <ClInclude Include="algorithm.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="boolcallable.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="functional.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

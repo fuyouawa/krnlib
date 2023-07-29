@@ -39,7 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.hpp" />
-    <ClInclude Include="boolcallable.hpp" />
     <ClInclude Include="functional.hpp" />
     <ClInclude Include="initializer_list.hpp" />
     <ClInclude Include="memory.hpp" />
