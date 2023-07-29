@@ -17,6 +17,7 @@ using list = std::list<T, krnlib::allocator<T>>;
 template<class T>
 using vector = std::vector<T, krnlib::allocator<T>>;
 using string = std::basic_string<char, std::char_traits<char>, krnlib::allocator<char>>;
+using wstring = std::basic_string<wchar_t, std::char_traits<wchar_t>, krnlib::allocator<wchar_t>>;
 template <class KeyT, class ValueT>
 using map = std::map<KeyT, ValueT, std::less<KeyT>, krnlib::allocator<std::pair<const KeyT, ValueT>>>;
 
