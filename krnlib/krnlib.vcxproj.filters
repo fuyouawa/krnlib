@@ -14,28 +14,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\krnlib\algorithm.hpp">
+    <ClInclude Include="algorithm.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\functional.hpp">
+    <ClInclude Include="functional.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\initializer_list.hpp">
+    <ClInclude Include="initializer_list.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\memory.hpp">
+    <ClInclude Include="memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\option.hpp">
+    <ClInclude Include="option.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\result.hpp">
+    <ClInclude Include="result.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\stl_container.hpp">
+    <ClInclude Include="stl_container.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\type_traits_extension.hpp">
+    <ClInclude Include="type_traits_extension.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

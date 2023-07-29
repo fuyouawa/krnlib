@@ -38,14 +38,14 @@
     <ClCompile Include="msvcfill.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\krnlib\algorithm.hpp" />
-    <ClInclude Include="..\include\krnlib\functional.hpp" />
-    <ClInclude Include="..\include\krnlib\initializer_list.hpp" />
-    <ClInclude Include="..\include\krnlib\memory.hpp" />
-    <ClInclude Include="..\include\krnlib\option.hpp" />
-    <ClInclude Include="..\include\krnlib\result.hpp" />
-    <ClInclude Include="..\include\krnlib\stl_container.hpp" />
-    <ClInclude Include="..\include\krnlib\type_traits_extension.hpp" />
+    <ClInclude Include="algorithm.hpp" />
+    <ClInclude Include="functional.hpp" />
+    <ClInclude Include="initializer_list.hpp" />
+    <ClInclude Include="memory.hpp" />
+    <ClInclude Include="option.hpp" />
+    <ClInclude Include="result.hpp" />
+    <ClInclude Include="stl_container.hpp" />
+    <ClInclude Include="type_traits_extension.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F538D737-209A-45CE-9C2F-63769A5203E5}</ProjectGuid>
@@ -154,7 +154,7 @@
       <RuntimeLibrary>
       </RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VC_IncludePath);$(SolutionDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VC_IncludePath);$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
   </ItemDefinitionGroup>
