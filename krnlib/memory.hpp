@@ -9,10 +9,13 @@
 
 namespace krnlib {
 namespace details {
+#ifdef WINNT
 // 内存分配类型
 constexpr POOL_TYPE kAllocPoolType = PagedPool;
 // 内存分配Tag
 constexpr ULONG kAllocPoolTag = 'mMuF';
+#endif // WINNT
+
 // 分配数组对象, 内存的结构
 template<class T>
 struct NewArrayMemory {
@@ -87,7 +90,7 @@ inline ElemT* NewArrayImplicit(size_t count, CtorArgsT&&... ctor_args) {
     KRNLIB_ASSERT(ctor_args_count <= count);
     if (count == 0) count = 1;
 
-    constexpr size_t alloc_size = std::_Get_size_of_n<sizeof(ElemT)>(count - 1) + sizeof(NewArrayMemoryT);
+    size_t alloc_size = std::_Get_size_of_n<sizeof(ElemT)>(count - 1) + sizeof(NewArrayMemoryT);
     NewArrayMemoryT* array_mem = (NewArrayMemoryT*)Malloc(alloc_size);
     RtlZeroMemory(array_mem, alloc_size);
     array_mem->count = count;

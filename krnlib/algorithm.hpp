@@ -77,7 +77,7 @@ inline void TraverseVariable(const TraverseCallbackT& callback, size_t begin_idx
 /// </summary>
 template<class CheckT, class... Types>
 inline constexpr void AssertCheckVariableTypesSame() {
-	static_assert(is_all_same_v<CheckT, Types...>, "In the passed argument list, the parameter types are not consistent, and parameters of different types from the specified one have appeared!")
+	static_assert(is_all_same_v<CheckT, Types...>, "In the passed argument list, the parameter types are not consistent, and parameters of different types from the specified one have appeared!");
 }
 
 /// <summary>
@@ -85,6 +85,6 @@ inline constexpr void AssertCheckVariableTypesSame() {
 /// </summary>
 template<class CheckT, class... Types>
 inline constexpr void AssertCheckVariableTypesConvertible() {
-	static_assert(is_all_convertible_v<CheckT, Types...>, "In the passed argument list, there are parameters that cannot be implicitly converted to the specified type!")
+	static_assert(is_all_convertible_v<CheckT, Types...>, "In the passed argument list, there are parameters that cannot be implicitly converted to the specified type!");
 }
 }

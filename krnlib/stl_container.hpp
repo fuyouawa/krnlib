@@ -18,10 +18,10 @@ template<class T>
 using vector = std::vector<T, krnlib::allocator<T>>;
 using string = std::basic_string<char, std::char_traits<char>, krnlib::allocator<char>>;
 template <class KeyT, class ValueT>
-using map = std::map<KeyT, ValueT, std::less<KeyT>, krnlib::allocator<std::pair<const KeyT, ValueT>>;
+using map = std::map<KeyT, ValueT, std::less<KeyT>, krnlib::allocator<std::pair<const KeyT, ValueT>>>;
 
 template <class KeyT, class ValueT>
-using multimap = std::multimap<KeyT, ValueT, std::less<KeyT>, krnlib::allocator<std::pair<const KeyT, ValueT>>;
+using multimap = std::multimap<KeyT, ValueT, std::less<KeyT>, krnlib::allocator<std::pair<const KeyT, ValueT>>>;
 template <class T>
 using deque = std::deque<T, krnlib::allocator<T>>;
 template <class T>

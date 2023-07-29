@@ -1,5 +1,6 @@
 #pragma once
 #include "krnlib/stl_container.hpp"
+#include "krnlib/functional.hpp"
 
 namespace krnlib {
 struct Empty{};
@@ -7,9 +8,8 @@ struct Empty{};
 template<class T, std::enable_if_t<!std::is_array_v<T>, int> = 0>
 class Ok {
 public:
-	static constexpr bool is_empty_v = std::is_same_v<T, Empty>;
 	template<class... ArgsT>
-	static constexpr bool va_param_limit = !is_empty_v && !is_pure_first_type_same_v<Ok, ArgsT...>;
+	static constexpr bool va_param_limit = !is_pure_first_type_same_v<Ok, ArgsT...>;
 
 	Ok(const Ok&) = delete;
 	Ok& operator=(const Ok&) = delete;
@@ -20,17 +20,14 @@ public:
 	template<class... ArgsT, std::enable_if_t<va_param_limit<ArgsT...>, int> = 0>
 	Ok(ArgsT&&... args) : val_(std::forward<ArgsT>(args)...) {}
 
-	Ok() : val_() { static_assert(is_empty_v, "To call this parameterless constructor, the type must be Empty!"); }
-
 	T val_;
 };
 
 template<class T, std::enable_if_t<!std::is_array_v<T>, int> = 0>
 class Err {
 public:
-	static constexpr bool is_empty_v = std::is_same_v<T, Empty>;
 	template<class... ArgsT>
-	static constexpr bool va_param_limit = !is_empty_v && !is_pure_first_type_same_v<Err, ArgsT...>;
+	static constexpr bool va_param_limit = !is_pure_first_type_same_v<Err, ArgsT...>;
 
 	Err(const Err&) = delete;
 	Err& operator=(const Err&) = delete;
@@ -41,68 +38,62 @@ public:
 	template<class... ArgsT, std::enable_if_t<va_param_limit<ArgsT...>, int> = 0>
 	Err(ArgsT&&... args) : val_(std::forward<ArgsT>(args)...) {}
 
-	Err() : val_() { static_assert(is_empty_v, "To call this parameterless constructor, the type must be Empty!"); }
-
 	T val_;
 };
-
-using OkEmp = Ok<Empty>;
-using ErrEmp = Err<Empty>;
 
 
 template<class T, class E>
 class Result
 {
 public:
-	using OkT = Ok<T>;
-	using ErrT = Err<E>;
-
-	Result(std::add_rvalue_reference_t<OkT> ok) {
-		ok_ptr_ = make_unique<OkT>(std::move(ok));
-		err_ptr_ = nullptr;
-	}
-	Result(std::add_rvalue_reference_t<ErrT> err) {
-		err_ptr_ = make_unique<ErrT>(std::move(err));
-		ok_ptr_ = nullptr;
-	}
+	Result(Ok<T>&& ok):
+		ok_ptr_(krnlib::make_unique<Ok<T>>(std::move(ok))),
+		err_ptr_(nullptr) {}
+	Result(Err<E>&& err) :
+		err_ptr_(krnlib::make_unique<Err<E>>(std::move(err))),
+		ok_ptr_(nullptr) {}
 	~Result() {}
 
-	bool Ok() {
+	bool IsOk() const noexcept {
 		return static_cast<bool>(ok_ptr_);
 	}
 
-	bool Err() {
-		return static_cast<bool>(err_ptr_);
+	bool IsErr() const noexcept {
+		return !IsOk();
 	}
 
-	T& OkVal() {
-		static_assert(!OkT::is_empty_v, "The type of 'Ok' is 'Empty', so you cannot retrieve its value!");
+	T& OkVal() noexcept {
 		return ok_ptr_->val_;
 	}
 
-	E& ErrVal() {
-		static_assert(!ErrT::is_empty_v, "The type of 'Err' is 'Empty', so you cannot retrieve its value!");
+	E& ErrVal() noexcept {
 		return err_ptr_->val_;
 	}
 
-	template<class FuncT, std::enable_if_t<!ErrT::is_empty_v, int> = 0>
-	T& UnwrapOrElse(const FuncT& op) {
-		if (Ok())
+	T& UnwrapOrElse(const krnlib::function<void(E&)>& op) {
+		if (IsOk())
 			return OkVal();
 		else
-			return op(ErrVal());
+			op(ErrVal());
 	}
 
-	template<class FuncT, std::enable_if_t<ErrT::is_empty_v, int> = 0>
-	T& UnwrapOrElse(const FuncT& op) {
-		if (Ok())
+	T& Expect(const char* msg) {
+		if (IsOk())
 			return OkVal();
 		else
-			return op();
+			std::_Xruntime_error(msg);
+	}
+
+	template<std::enable_if_t<krnlib::is_charptr_v<E>, int> = 0>
+	T& Unwrap() {
+		if (IsOk())
+			return OkVal();
+		else
+			std::_Xruntime_error(ErrVal());
 	}
 
 private:
-	krnlib::unique_ptr<OkT> ok_ptr_;
-	krnlib::unique_ptr<ErrT> err_ptr_;
+	krnlib::unique_ptr<Ok<T>> ok_ptr_;
+	krnlib::unique_ptr<Err<E>> err_ptr_;
 };
 }
