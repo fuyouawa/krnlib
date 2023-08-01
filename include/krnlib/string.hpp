@@ -38,6 +38,12 @@ _NODISCARD StringT UIntegralToString(const ValueT val) {
 }
 }
 
+/**
+ * @brief 整数转字符串
+ * @tparam T 数值类型
+ * @param val 数值
+ * @return 转换后的字符串
+*/
 template<class T>
 _NODISCARD inline krnlib::string to_string(T val) {
     using DecayT = std::decay_t<T>;
@@ -49,6 +55,12 @@ _NODISCARD inline krnlib::string to_string(T val) {
         return details::IntegralToString<char>(val);
 }
 
+/**
+ * @brief 整数转宽字符串
+ * @tparam T 数值类型
+ * @param val 数值
+ * @return 转换后的宽字符串
+*/
 template<class T>
 _NODISCARD inline krnlib::wstring to_wstring(T val) {
     using DecayT = std::decay_t<T>;
