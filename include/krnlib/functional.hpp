@@ -1,24 +1,23 @@
-#pragma once
-#include "krnlib/memory.hpp"
+ï»¿#pragma once
 #include <type_traits>
 
 namespace krnlib {
 namespace details {
 /* ---------------------------------------------------------------------------------------------
-* 1: ½«¿Éµ÷ÓÃ¶ÔÏó·â×°ÎªÒ»¸öÀà, ·½±ã²Ù×÷
-* 2: Ê¹ÓÃÀàĞÍ²Á³ı, Ê¹´úÂë¼ò½à¸üÃ÷ÁË
+* 1: å°†å¯è°ƒç”¨å¯¹è±¡å°è£…ä¸ºä¸€ä¸ªç±», æ–¹ä¾¿æ“ä½œ
+* 2: ä½¿ç”¨ç±»å‹æ“¦é™¤, ä½¿ä»£ç ç®€æ´æ›´æ˜äº†
 --------------------------------------------------------------------------------------------- */
 template <class RetT, class... ArgsT>
 class __declspec(novtable) CallableObjBase {
 public:
 	/*
-	* ×¢: ÒÔÏÂËµµÄ"×ÔÉí", ¶¼ÊÇ×ÓÀà(ÊµÏÖÀà)ÏòÉÏ×ªĞÍºóµÄ
-	* Ê¹ÓÃÀàĞÍ²Á³ı½«Ï¸½ÚÒş²ØÆğÀ´, Êµ¼Êµ÷ÓÃÊ±Ö´ĞĞµÄÊÇ×ÓÀà¶ÔÓ¦µÄº¯Êı
+	* æ³¨: ä»¥ä¸‹è¯´çš„"è‡ªèº«", éƒ½æ˜¯å­ç±»(å®ç°ç±»)å‘ä¸Šè½¬å‹åçš„
+	* ä½¿ç”¨ç±»å‹æ“¦é™¤å°†ç»†èŠ‚éšè—èµ·æ¥, å®é™…è°ƒç”¨æ—¶æ‰§è¡Œçš„æ˜¯å­ç±»å¯¹åº”çš„å‡½æ•°
 	*/
 
-	// ·ÖÅäÒ»¸öĞÂµÄ¶ÔÏó, »ñÈ¡×ÔÉíµÄ¸´ÖÆ
+	// åˆ†é…ä¸€ä¸ªæ–°çš„å¯¹è±¡, è·å–è‡ªèº«çš„å¤åˆ¶
 	virtual CallableObjBase* GetCopy() const = 0;
-	// µ÷ÓÃ¿Éµ÷ÓÃ¶ÔÏó
+	// è°ƒç”¨å¯è°ƒç”¨å¯¹è±¡
 	virtual RetT DoCall(ArgsT&&...) = 0;
 
 	CallableObjBase() = default;
@@ -27,7 +26,7 @@ public:
 };
 
 /* ---------------------------------------------------------------------------------------------
-* Õâ¸öÊÇFuncBaseµÄÊµÏÖÀà, ÀàĞÍ²Á³ıËùÒş²ØµÄ²¿·Ö
+* è¿™ä¸ªæ˜¯FuncBaseçš„å®ç°ç±», ç±»å‹æ“¦é™¤æ‰€éšè—çš„éƒ¨åˆ†
 --------------------------------------------------------------------------------------------- */
 template <class CallableT, class RetT, class... ArgsT>
 class CallableObjImpl : public CallableObjBase<RetT, ArgsT...> {
@@ -35,8 +34,8 @@ public:
 	using InheritedT = CallableObjBase<RetT, ArgsT...>;
 
 	/*
-	* ×Ô¶¯¸ù¾İFuncTTempµÄÀàĞÍÖ´ĞĞ¸³Öµ»òÕßÓÒÖµÒıÓÃ
-	* Ê¹ÓÃenable_if_tÈ·±£FuncTTemp²»ÊÇ×ÔÉíµÄÀàĞÍ, ·ñÔò»áÏİÈëÎŞÏŞµİ¹é
+	* è‡ªåŠ¨æ ¹æ®FuncTTempçš„ç±»å‹æ‰§è¡Œèµ‹å€¼æˆ–è€…å³å€¼å¼•ç”¨
+	* ä½¿ç”¨enable_if_tç¡®ä¿FuncTTempä¸æ˜¯è‡ªèº«çš„ç±»å‹, å¦åˆ™ä¼šé™·å…¥æ— é™é€’å½’
 	*/
 	template<class NewCallableT, std::enable_if_t<!std::is_same_v<CallableObjImpl, std::decay_t<NewCallableT>>, int> = 0>
 	CallableObjImpl(NewCallableT&& new_call) : call_(std::forward<NewCallableT>(new_call)) {}
@@ -44,11 +43,11 @@ public:
 private:
 	InheritedT* GetCopy() const override {
 		/*
-		* ÏÈ·ÖÅäÒ»¿é×ÔÉí´óĞ¡µÄÄÚ´æ
-		* È»ºó¶ÔÄÚ´æÖ´ĞĞ¹¹Ôìº¯Êı, ¿½±´ÄÚ²¿µÄ¿Éµ÷ÓÃ¶ÔÏó
-		* ×îºó·µ»Ø¸¸Àà½øĞĞÀàĞÍ²Á³ı
+		* å…ˆåˆ†é…ä¸€å—è‡ªèº«å¤§å°çš„å†…å­˜
+		* ç„¶åå¯¹å†…å­˜æ‰§è¡Œæ„é€ å‡½æ•°, æ‹·è´å†…éƒ¨çš„å¯è°ƒç”¨å¯¹è±¡
+		* æœ€åè¿”å›çˆ¶ç±»è¿›è¡Œç±»å‹æ“¦é™¤
 		*/
-		return New<CallableObjImpl>(call_);
+		return new CallableObjImpl(call_);
 	}
 
 	RetT DoCall(ArgsT&&... args) override {
@@ -60,9 +59,9 @@ private:
 
 
 /* ---------------------------------------------------------------------------------------------
-* ´ËÀàµÄ×÷ÓÃÊÇ
-* 1. ½«¿Éµ÷ÓÃ¶ÔÏóµÄ²Ù×÷ÔÙ·â×°Ò»²ã
-* 2. Ê¹µÃ×îÍâ²ãµÄÀàÖ»ĞèÒªÌá¹©Ò»¸öÄ£°å, ×Ô¶¯½«Ä£°åÖĞµÄ·µ»ØÖµÀàĞÍºÍ²ÎÊıÁĞ±íÌáÈ¡³öÀ´
+* æ­¤ç±»çš„ä½œç”¨æ˜¯
+* 1. å°†å¯è°ƒç”¨å¯¹è±¡çš„æ“ä½œå†å°è£…ä¸€å±‚
+* 2. ä½¿å¾—æœ€å¤–å±‚çš„ç±»åªéœ€è¦æä¾›ä¸€ä¸ªæ¨¡æ¿, è‡ªåŠ¨å°†æ¨¡æ¿ä¸­çš„è¿”å›å€¼ç±»å‹å’Œå‚æ•°åˆ—è¡¨æå–å‡ºæ¥
 --------------------------------------------------------------------------------------------- */
 template <class RetT, class... ArgsT>
 class FuncBaseImpl {
@@ -72,38 +71,38 @@ public:
 	FuncBaseImpl() : callable_obj_ptr_(nullptr) {}
 	~FuncBaseImpl() { Tidy(); }
 
-	// µ÷ÓÃÄÚ²¿µÄ¿Éµ÷ÓÃ¶ÔÏó
+	// è°ƒç”¨å†…éƒ¨çš„å¯è°ƒç”¨å¯¹è±¡
 	RetT operator()(ArgsT... args) const {
 		return callable_obj_ptr_->DoCall(std::forward<ArgsT>(args)...);
 	}
 
 protected:
-	// ÅĞ¶ÏÊÇ·ñÊÇ¿Éµ÷ÓÃ¶ÔÏó, ²¢ÇÒ´«ÈëµÄNewCallableTºÍÉùÃ÷µÄµ÷ÓÃ·½Ê½ÏàÍ¬
+	// åˆ¤æ–­æ˜¯å¦æ˜¯å¯è°ƒç”¨å¯¹è±¡, å¹¶ä¸”ä¼ å…¥çš„NewCallableTå’Œå£°æ˜çš„è°ƒç”¨æ–¹å¼ç›¸åŒ
 	template <class NewCallableT, class function>
 	using EnableIfAllowableCallT = std::enable_if_t<std::conjunction_v<std::negation<std::is_same<std::_Remove_cvref_t<NewCallableT>, function>>,
 		std::_Is_invocable_r<RetT, std::decay_t<NewCallableT>, ArgsT...>>,
 		int>;
 	/*
-	* EnableIfAllowableCallTÔ­Àí:
+	* EnableIfAllowableCallTåŸç†:
 	* 1: std::negation<std::is_same<std::_Remove_cvref_t<CallableT>, function>>
-	*	½âÎö: Ê×ÏÈÍ¨¹ıstd::_Remove_cvref_t<CallableT>È¥³ıCallableTµÄÒ»Ğ©¸ÉÈÅÊôĞÔÈ»ºóÊ¹ÓÃstd::is_sameÓëfunctionÅĞ¶Ï, ×îºóÊ¹ÓÃstd::negation½«½á¹ûÈ¡·´
-	*	×÷ÓÃ: ·ÀÖ¹CallableTÓë×îÍâ²ãµÄfunctionÏàµÈ, µ¼ÖÂ¿½±´¹¹Ôìº¯ÊıÊ±·¢ÉúÎŞÏŞµİ¹é
+	*	è§£æ: é¦–å…ˆé€šè¿‡std::_Remove_cvref_t<CallableT>å»é™¤CallableTçš„ä¸€äº›å¹²æ‰°å±æ€§ç„¶åä½¿ç”¨std::is_sameä¸functionåˆ¤æ–­, æœ€åä½¿ç”¨std::negationå°†ç»“æœå–å
+	*	ä½œç”¨: é˜²æ­¢CallableTä¸æœ€å¤–å±‚çš„functionç›¸ç­‰, å¯¼è‡´æ‹·è´æ„é€ å‡½æ•°æ—¶å‘ç”Ÿæ— é™é€’å½’
 	*
 	* 2: std::_Is_invocable_r<RetT, std::decay_t<CallableT>&, ArgsT...>>
-	*	½âÎö: Ê×ÏÈÍ¨¹ıstd::decay_t<CallableT>È¥³ıCallableT¸ÉÈÅµÄÊôĞÔ, È»ºóÊ¹ÓÃstd::_Is_invocable_r¼ì²â¿Éµ÷ÓÃ¶ÔÏóÊÇ·ñ¿ÉÒÔ°´ÕÕ´«ÈëµÄ·µ»ØÖµºÍ²ÎÊıÁĞ±í½øĞĞµ÷ÓÃ
-	*	×÷ÓÃ: ¼ì²â¸ø¶¨µÄCallableTÊÇ·ñ¿ÉÒÔ°´ÕÕÔ¤ÆÚµ÷ÓÃ
+	*	è§£æ: é¦–å…ˆé€šè¿‡std::decay_t<CallableT>å»é™¤CallableTå¹²æ‰°çš„å±æ€§, ç„¶åä½¿ç”¨std::_Is_invocable_ræ£€æµ‹å¯è°ƒç”¨å¯¹è±¡æ˜¯å¦å¯ä»¥æŒ‰ç…§ä¼ å…¥çš„è¿”å›å€¼å’Œå‚æ•°åˆ—è¡¨è¿›è¡Œè°ƒç”¨
+	*	ä½œç”¨: æ£€æµ‹ç»™å®šçš„CallableTæ˜¯å¦å¯ä»¥æŒ‰ç…§é¢„æœŸè°ƒç”¨
 	*
-	* 3: ×îºóÍ¨¹ıstd::conjunction_v½« 1 & 2
+	* 3: æœ€åé€šè¿‡std::conjunction_vå°† 1 & 2
 	*/
 
 
-	// ÖØÖÃÎª²ÎÊıµÄ¸´ÖÆ
+	// é‡ç½®ä¸ºå‚æ•°çš„å¤åˆ¶
 	void ResetCopy(const FuncBaseImpl& right) {
 		if (!right.Empty())
 			callable_obj_ptr_ = right.callable_obj_ptr_->GetCopy();
 	}
 
-	// ÖØÖÃÎª²ÎÊıµÄÒıÓÃ
+	// é‡ç½®ä¸ºå‚æ•°çš„å¼•ç”¨
 	void ResetMove(FuncBaseImpl&& right) noexcept {
 		if (!right.Empty()) {
 			callable_obj_ptr_ = right.callable_obj_ptr_;
@@ -111,20 +110,20 @@ protected:
 		}
 	}
 
-	// ÖØÖÃÄÚ²¿µÄ¿Éµ÷ÓÃ¶ÔÏó
+	// é‡ç½®å†…éƒ¨çš„å¯è°ƒç”¨å¯¹è±¡
 	template <class CallableT>
 	void AutoReset(CallableT&& call) {
-		// »ñÈ¡CallableObjBaseµÄÊµÏÖÀà
+		// è·å–CallableObjBaseçš„å®ç°ç±»
 		using ImplT = CallableObjImpl<std::decay_t<CallableT>, RetT, ArgsT...>;
-		// ·ÖÅäÄÚ´æ, ²¢½øĞĞÏòÉÏ×ªĞÍ(ÀàĞÍ²Á³ı)
-		callable_obj_ptr_ = (CallableObj*)New<ImplT>(std::forward<CallableT>(call));
+		// åˆ†é…å†…å­˜, å¹¶è¿›è¡Œå‘ä¸Šè½¬å‹(ç±»å‹æ“¦é™¤)
+		callable_obj_ptr_ = (CallableObj*)new ImplT(std::forward<CallableT>(call));
 	}
 
 	bool Empty() const noexcept {
 		return callable_obj_ptr_ == nullptr;
 	}
 
-	// ½»»»
+	// äº¤æ¢
 	void Swap(FuncBaseImpl& right) noexcept {
 		CallableObj* temp = callable_obj_ptr_;
 		callable_obj_ptr_ = right.callable_obj_ptr_;
@@ -132,10 +131,10 @@ protected:
 	}
 
 private:
-	// ÊÍ·ÅÄÚ´æ
+	// é‡Šæ”¾å†…å­˜
 	void Tidy() {
 		if (callable_obj_ptr_) {
-			Delete(callable_obj_ptr_);
+			delete callable_obj_ptr_;
 			callable_obj_ptr_ = nullptr;
 		}
 	}
@@ -144,8 +143,8 @@ private:
 };
 
 /*
-* Ê¹ÓÃSFINAE, ¸ù¾İTµÄÀàĞÍÑ¡Ôñ¶ÔÓ¦µÄÊµÏÖÂ·¾¶
-* Èç¹ûÎŞ·¨×ª»»³ÉRetT(ArgsT...), Ôò»á´¥·¢±àÒëÆÚ´íÎó
+* ä½¿ç”¨SFINAE, æ ¹æ®Tçš„ç±»å‹é€‰æ‹©å¯¹åº”çš„å®ç°è·¯å¾„
+* å¦‚æœæ— æ³•è½¬æ¢æˆRetT(ArgsT...), åˆ™ä¼šè§¦å‘ç¼–è¯‘æœŸé”™è¯¯
 */
 template <class T>
 struct GetFunctionImpl {
@@ -174,10 +173,10 @@ public:
 	}
 
 	/*
-	* ×¢: ±ØĞëµÃÊ¹ÓÃNewCallableT, ¶ø²»ÄÜÊ¹ÓÃÒÑÓĞµÄCallableT, ÕâÊÇÒòÎªÉùÃ÷µÄCallableT¶àÉÙ¶¼»áºÍÊµ¼ÊÇé¿öÓĞËù²îÒì.
-	* µ±È»¾ßÌåµÄNewCallableTÊÇ·ñÄÜ¹»µÈÍ¬ÓÚCallableTÀ´µ÷ÓÃ, ÓÉ×ÓÀàÄÚ²¿µÄEnableIfAllowableCallT½øĞĞÅĞ¶Ï
+	* æ³¨: å¿…é¡»å¾—ä½¿ç”¨NewCallableT, è€Œä¸èƒ½ä½¿ç”¨å·²æœ‰çš„CallableT, è¿™æ˜¯å› ä¸ºå£°æ˜çš„CallableTå¤šå°‘éƒ½ä¼šå’Œå®é™…æƒ…å†µæœ‰æ‰€å·®å¼‚.
+	* å½“ç„¶å…·ä½“çš„NewCallableTæ˜¯å¦èƒ½å¤Ÿç­‰åŒäºCallableTæ¥è°ƒç”¨, ç”±å­ç±»å†…éƒ¨çš„EnableIfAllowableCallTè¿›è¡Œåˆ¤æ–­
 	*/
-	// Îª¿Éµ÷ÓÃ¶ÔÏó·ÖÅäÄÚ´æ
+	// ä¸ºå¯è°ƒç”¨å¯¹è±¡åˆ†é…å†…å­˜
 	template <class NewCallableT, typename InheritedT::template EnableIfAllowableCallT<NewCallableT, function> = 0>
 	function(NewCallableT&& new_call) {
 		this->AutoReset(std::forward<NewCallableT>(new_call));
@@ -185,10 +184,10 @@ public:
 
 	function& operator=(const function& right) {
 		/*
-		* µ÷ÓÃ¿½±´¹¹Ôìº¯Êı, ·ÖÅäÒ»¸öÁÙÊ±±äÁ¿, ½«ÀïÃæµÄÄÚÈİºÍ×ÔÉí½»»»
-		* ÕâÑù×öµÄºÃ´¦ÊÇ:
-		* 1. ¿ÉÒÔµ÷ÓÃÒÑÓĞµÄ¿½±´¹¹Ôìº¯Êı, ¿½±´Êı¾İ, ¼õÉÙÖØ¸´´úÂë
-		* 2. Ê¹ÓÃSwap½«Ô­ÓĞµÄÊı¾İ½»»»Èë¿½±´¹¹Ôìº¯ÊıÀï, ×÷ÓÃÓòÀë¿ªºó¾Í»á×Ô¶¯µ÷ÓÃÎö¹¹º¯Êı, ÊÍ·ÅÔ­ÓĞµÄÊı¾İ
+		* è°ƒç”¨æ‹·è´æ„é€ å‡½æ•°, åˆ†é…ä¸€ä¸ªä¸´æ—¶å˜é‡, å°†é‡Œé¢çš„å†…å®¹å’Œè‡ªèº«äº¤æ¢
+		* è¿™æ ·åšçš„å¥½å¤„æ˜¯:
+		* 1. å¯ä»¥è°ƒç”¨å·²æœ‰çš„æ‹·è´æ„é€ å‡½æ•°, æ‹·è´æ•°æ®, å‡å°‘é‡å¤ä»£ç 
+		* 2. ä½¿ç”¨Swapå°†åŸæœ‰çš„æ•°æ®äº¤æ¢å…¥æ‹·è´æ„é€ å‡½æ•°é‡Œ, ä½œç”¨åŸŸç¦»å¼€åå°±ä¼šè‡ªåŠ¨è°ƒç”¨ææ„å‡½æ•°, é‡Šæ”¾åŸæœ‰çš„æ•°æ®
 		*/
 		function(right).Swap(*this);
 		return *this;
@@ -201,7 +200,7 @@ public:
 		return *this;
 	}
 
-	// Îª¿Éµ÷ÓÃ¶ÔÏó¸³Öµ²Ù×÷
+	// ä¸ºå¯è°ƒç”¨å¯¹è±¡èµ‹å€¼æ“ä½œ
 	template <class NewCallableT, typename InheritedT::template EnableIfAllowableCallT<NewCallableT, function> = 0>
 	function& operator=(NewCallableT&& new_call) {
 		function(std::forward<NewCallableT>(new_call)).Swap(*this);

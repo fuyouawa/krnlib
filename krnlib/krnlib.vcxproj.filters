@@ -7,36 +7,54 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{62708ab6-22a7-44e7-bb83-3649c77b6286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\detail">
+      <UniqueIdentifier>{18e7f45b-6c3f-4054-bd9e-2b1b2971771c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\detail\basic">
+      <UniqueIdentifier>{792e3554-1218-4f33-9fdd-e0257e333d21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\krnlib\detail\senior_enum_elem.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\functional.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\option.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\result.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\stl_container.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\initializer_list.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\memory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\detail\basic\algorithm.hpp">
+      <Filter>Header Files\detail\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\detail\basic\type_traits_extension.hpp">
+      <Filter>Header Files\detail\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\detail\basic\config.hpp">
+      <Filter>Header Files\detail\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\string.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="msvcfill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="algorithm.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="functional.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="initializer_list.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="memory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="option.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="result.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stl_container.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="type_traits_extension.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="new.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

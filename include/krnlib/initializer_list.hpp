@@ -1,22 +1,20 @@
-#pragma once
+﻿#pragma once
 #include <type_traits>
-#include <utility>
-#include "krnlib/memory.hpp"
 
 namespace krnlib {
 /*
-* ģ��std::initializer_list
+* 模拟std::initializer_list
 */
 template<class T>
 class initializer_list {
 public:
     template<class... ArgsT>
     initializer_list(ArgsT&&... args) : size_(sizeof...(args)) {
-        buffer_ = NewArrayImplicit<T>(size_, std::forward<ArgsT>(args)...);
+        buffer_ = new T[sizeof...(args)]{std::forward<ArgsT>(args)...};
     }
 
     ~initializer_list() {
-        DeleteArray(buffer_);
+        delete[] buffer_;
     }
 
     T* begin() const noexcept {

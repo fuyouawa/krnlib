@@ -1,10 +1,12 @@
-#include <ntifs.h>
+﻿#include <ntifs.h>
 #include <stdexcept>
 
 namespace std {
+namespace details {
 static constexpr POOL_TYPE kExceptAllocPoolType = NonPagedPoolNx;
-static constexpr ULONG kExceptAllocPoolTag = 'xEuF';
+static constexpr ULONG kExceptAllocPoolTag = 'cxeF';
 static constexpr char kExceptAllocFailedErrMsg[] = "krnlib: Exception copy allocation failed!";
+}
 
 void __CLRCALL_PURE_OR_CDECL _Xbad_alloc() {
     throw std::bad_alloc();
@@ -39,9 +41,9 @@ extern "C" void __cdecl __std_exception_copy(
     }
 
     size_t len = strlen(_From->_What) + 1;
-    char* buff = static_cast<char*>(ExAllocatePoolWithTag(kExceptAllocPoolType, len, kExceptAllocPoolTag));
+    char* buff = static_cast<char*>(ExAllocatePoolWithTag(details::kExceptAllocPoolType, len, details::kExceptAllocPoolTag));
     if (!buff) {
-        _To->_What = kExceptAllocFailedErrMsg;
+        _To->_What = details::kExceptAllocFailedErrMsg;
         _To->_DoFree = false;
         return;
     }
@@ -55,7 +57,7 @@ extern "C" void __cdecl __std_exception_destroy(
     _Inout_ __std_exception_data * _Data
 ) {
     if (_Data->_DoFree && _Data->_What) {
-        ExFreePoolWithTag(const_cast<char*>(_Data->_What), kExceptAllocPoolTag);
+        ExFreePoolWithTag(const_cast<char*>(_Data->_What), details::kExceptAllocPoolTag);
     }
     _Data->_What = nullptr;
     _Data->_DoFree = false;
