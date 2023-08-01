@@ -4,3 +4,4 @@
 1. 一些常用的c++库的驱动版(包括stl容器, function, initializer_list......)
 2. 一些驱动中适用的方便的库
 ## 更多信息请查看项目Wiki
+https://github.com/fuyouawa/krnlib/wiki/Document
