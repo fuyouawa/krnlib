@@ -15,7 +15,7 @@ namespace krnlib {
 */
 template<class T>
 inline T* Allocate(size_t count) {
-    return operator new(std::_Get_size_of_n<sizeof(T)>(count))
+    return (T*)operator new(std::_Get_size_of_n<sizeof(T)>(count));
 }
 
 /**
