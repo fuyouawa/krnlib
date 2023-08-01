@@ -23,6 +23,7 @@ public:
 
 	template<class T, class DecayT=std::decay_t<T>, std::enable_if_t<!std::is_same_v<DecayT, SeniorEnumElemValue>, int> = 0>
 	SeniorEnumElemValue(T&& val) {
+		StaticAssertFloatingPoint<T>();
 		if constexpr (std::is_integral_v<DecayT>)
 			int_ = static_cast<uint64_t>(val);
 		else if constexpr (std::is_pointer_v<DecayT>)

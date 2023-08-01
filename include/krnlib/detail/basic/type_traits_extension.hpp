@@ -59,6 +59,21 @@ template<class T, class U>
 static constexpr bool is_decay_same_v = std::is_same_v<std::decay_t<T>, std::decay_t<U>>;
 template<class T, class U>
 static constexpr bool is_decay_convertible_v = std::is_convertible_v<std::decay_t<T>, std::decay_t<U>>;
+
+template<class T>
+struct complete_pure {
+	using type = std::decay_t<T>;
+};
+
+template<typename T>
+struct complete_pure<T[]> {
+	using type = typename complete_pure<T>::type;
+};
+
+template<typename T>
+struct complete_pure<T*> {
+	using type = typename complete_pure<T>::type;
+};
 }
 
 //template<class CompareT, class... Types>
@@ -71,6 +86,9 @@ static constexpr bool is_decay_convertible_v = std::is_convertible_v<std::decay_
 //static constexpr bool is_first_type_convertible_v = details::is_first_type_convertible<ToT, FromT...>();
 //template<class ToT, class... FromT>
 //static constexpr bool is_only_one_type_and_is_convertible_v = details::is_only_one_type_and_is_convertible<ToT, FromT...>();
+
+template<typename T>
+using complete_pure_t = typename details::complete_pure<T>::type;
 
 template<class T>
 inline constexpr bool is_number_v = std::is_integral_v<T> || std::is_floating_point_v<T>;
