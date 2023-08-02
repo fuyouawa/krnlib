@@ -11,6 +11,11 @@ struct ErrTag {};
 using Ok = details::SeniorEnumElemValue<details::OkTag>;
 using Err = details::SeniorEnumElemValue<details::ErrTag>;
 
+/**
+ * @brief 抽象可恢复错误概念, Result表示可恢复错误类型, Ok表示成功, Err表示错误
+ * @tparam T Ok的数据类型
+ * @tparam E Err的错误信息类型
+*/
 template<class T, class E>
 class Result
 {
@@ -29,7 +34,6 @@ public:
 
 	/**
 	 * @brief 是否执行成功
-	 * @return true为成功, false为出错
 	*/
 	bool IsOk() const noexcept {
 		return okwp_.IsValid();
@@ -37,7 +41,6 @@ public:
 
 	/**
 	 * @brief 是否出现错误
-	 * @return true为出错, false为成功
 	*/
 	bool IsErr() const noexcept {
 		return !IsOk();
@@ -45,7 +48,6 @@ public:
 
 	/**
 	 * @brief 获取函数想要返回的数据
-	 * @return 数据
 	*/
 	T OkVal() const noexcept {
 		return okwp_.GetVal();
@@ -53,7 +55,6 @@ public:
 
 	/**
 	 * @brief 获取错误信息
-	 * @return 错误信息
 	*/
 	E ErrVal() const noexcept {
 		return errwp_.GetVal();
@@ -62,7 +63,6 @@ public:
 	/**
 	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 调用op参数并传入Err中的数据
 	 * @param op 可调用对象, 接收Err的数据
-	 * @return Ok中的数据
 	*/
 	T UnwrapOrElse(const std::function<void(E)>& op) {
 		if (IsOk())
@@ -75,7 +75,6 @@ public:
 	/**
 	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 抛出异常
 	 * @param msg 异常信息
-	 * @return Ok中的数据
 	*/
 	T Expect(const char* msg) {
 		if (IsOk())
@@ -86,7 +85,6 @@ public:
 
 	/**
 	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 抛出异常
-	 * @return Ok中的数据
 	*/
 	T Unwrap() {
 		if (IsOk())
