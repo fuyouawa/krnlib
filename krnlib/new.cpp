@@ -1,9 +1,14 @@
 ﻿#include <new>
-#include "krnlib/detail/basic/config.hpp"
+#include <ntifs.h>
+
+// 内存分配类型
+constexpr POOL_TYPE kAllocPoolType = PagedPool;
+// 内存分配Tag
+constexpr ULONG kAllocPoolTag = 'mMuF';
 
 _NODISCARD _Ret_notnull_ _Post_writable_byte_size_(size) _VCRT_ALLOCATOR
 void* __CRTDECL operator new(size_t size) {
-	auto ptr = ExAllocatePoolWithTag(krnlib::details::kAllocPoolType, size, krnlib::details::kAllocPoolTag);
+	auto ptr = ExAllocatePoolWithTag(kAllocPoolType, size, kAllocPoolTag);
 	if (!ptr)
 		throw std::bad_alloc();
 	return ptr;
@@ -16,7 +21,7 @@ void* __CRTDECL operator new[](size_t size) {
 
 void __CRTDECL operator delete(void* ptr) noexcept {
 	if (ptr)
-		ExFreePoolWithTag(ptr, krnlib::details::kAllocPoolTag);
+		ExFreePoolWithTag(ptr, kAllocPoolTag);
 }
 
 void __CRTDECL operator delete[](void* ptr) noexcept {

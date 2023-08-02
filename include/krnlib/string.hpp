@@ -1,74 +1,67 @@
 #pragma once
-#include <string>
-#include "krnlib/memory.hpp"
+#include "krnlib/detail/string_detail.hpp"
 
 namespace krnlib {
 using string = std::basic_string<char, std::char_traits<char>, allocator<char>>;
 using wstring = std::basic_string<wchar_t, std::char_traits<wchar_t>, allocator<wchar_t>>;
 
-namespace details {
-template <class ElemT, class ValueT, class StringT=std::basic_string<ElemT, std::char_traits<ElemT>, krnlib::allocator<ElemT>>>
-_NODISCARD StringT IntegralToString(const ValueT val) {
-    // convert val to string
-    static_assert(std::is_integral_v<ValueT>, "ValueT must be integral");
-    using UValueT = std::make_unsigned_t<ValueT>;
-    ElemT buf[21]; // can hold -2^63 and 2^64 - 1, plus NUL
-    ElemT* const buf_end = std::end(buf);
-    ElemT* rnext = buf_end;
-    const auto uval = static_cast<UValueT>(val);
-    if (val < 0) {
-        rnext = std::_UIntegral_to_buff(rnext, 0 - uval);
-        *--rnext = '-';
-    }
-    else {
-        rnext = std::_UIntegral_to_buff(rnext, uval);
-    }
-    return StringT(rnext, buf_end);
-}
-
-template <class ElemT, class ValueT, class StringT = std::basic_string<ElemT, std::char_traits<ElemT>, krnlib::allocator<ElemT>>>
-_NODISCARD StringT UIntegralToString(const ValueT val) {
-    // convert val to string
-    static_assert(std::is_integral_v<ValueT>, "ValueT must be integral");
-    static_assert(std::is_unsigned_v<ValueT>, "ValueT must be unsigned");
-    ElemT buf[21]; // can hold 2^64 - 1, plus NUL
-    ElemT* const buf_end = std::end(buf);
-    ElemT* const rnext = std::_UIntegral_to_buff(buf_end, val);
-    return StringT(rnext, buf_end);
-}
-}
-
-/**
- * @brief 整数转字符串
- * @tparam T 数值类型
- * @param val 数值
- * @return 转换后的字符串
-*/
 template<class T>
 _NODISCARD inline krnlib::string to_string(T val) {
-    using DecayT = std::decay_t<T>;
     StaticAssertFloatingPoint<T>();
-
-    if constexpr (std::is_unsigned_v<DecayT>)
+    if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<char>(val);
     else
         return details::IntegralToString<char>(val);
 }
 
-/**
- * @brief 整数转宽字符串
- * @tparam T 数值类型
- * @param val 数值
- * @return 转换后的宽字符串
-*/
 template<class T>
 _NODISCARD inline krnlib::wstring to_wstring(T val) {
-    using DecayT = std::decay_t<T>;
     StaticAssertFloatingPoint<T>();
-
-    if constexpr (std::is_unsigned_v<DecayT>)
+    if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<wchar_t>(val);
     else
         return details::IntegralToString<wchar_t>(val);
+}
+
+_NODISCARD inline int stoi(const string& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<int>(str, idx, base, "invalid stoi argument", "stoi argument out of range");
+}
+
+_NODISCARD inline long stol(const string& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<long>(str, idx, base, "invalid stol argument", "stol argument out of range");
+}
+
+_NODISCARD inline unsigned long stoul(const string& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<unsigned long>(str, idx, base, "invalid stoul argument", "stoul argument out of range");
+}
+
+_NODISCARD inline long long stoll(const string& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<long long>(str, idx, base, "invalid stoll argument", "stoll argument out of range");
+}
+
+_NODISCARD inline unsigned long long stoull(const string& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
+}
+
+
+
+_NODISCARD inline int stoi(const wstring& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<int>(str, idx, base, "invalid stoi argument", "stoi argument out of range");
+}
+
+_NODISCARD inline long stol(const wstring& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<long>(str, idx, base, "invalid stol argument", "stol argument out of range");
+}
+
+_NODISCARD inline unsigned long stoul(const wstring& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<unsigned long>(str, idx, base, "invalid stoul argument", "stoul argument out of range");
+}
+
+_NODISCARD inline long long stoll(const wstring& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<long long>(str, idx, base, "invalid stoll argument", "stoll argument out of range");
+}
+
+_NODISCARD inline unsigned long long stoull(const wstring& str, size_t* idx = nullptr, int base = 10) {
+    return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
 }
 }

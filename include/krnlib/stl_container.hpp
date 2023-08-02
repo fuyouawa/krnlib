@@ -5,7 +5,7 @@
 #include <map>
 #include <stack>
 #include <set>
-#include "krnlib/memory.hpp"
+#include "krnlib/detail/allocator.hpp"
 
 /*
 * STL容器驱动版

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "krnlib/detail/basic/type_traits_extension.hpp"
+#include "krnlib/detail/basic/type_traits.hpp"
 #ifdef WINNT
 #include <ntifs.h>
 #else
