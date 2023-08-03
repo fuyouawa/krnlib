@@ -1,15 +1,12 @@
 ﻿#pragma once
-#include "krnlib/detail/senior_enum_elem.hpp"
+#include "krnlib/detail/simu_enum_elem.hpp"
+#include "krnlib/functional.hpp"
 #include <stdexcept>
 
 namespace krnlib {
-namespace details {
-struct OkTag {};
-struct ErrTag {};
-}
 
-using Ok = details::SeniorEnumElemValue<details::OkTag>;
-using Err = details::SeniorEnumElemValue<details::ErrTag>;
+KRNLIB_SIMU_ENUM_ELEM(Ok)
+KRNLIB_SIMU_ENUM_ELEM(Err)
 
 /**
  * @brief 抽象可恢复错误概念, Result表示可恢复错误类型, Ok表示成功, Err表示错误
@@ -20,23 +17,38 @@ template<class T, class E>
 class Result
 {
 public:
+	using Ok = Ok<T>;
+	using Err = Err<E>;
+
+	enum Tag {
+		kOkTag,
+		kErrTag
+	};
+
 	/**
 	 * @brief 接收Ok, 表示函数执行成功
-	 * @param ok 内部存着函数想要返回的数据
+	 * @param rvalue 右值
 	*/
-	Result(Ok&& ok) : okwp_(std::move(ok)), errwp_() {}
+	template<class T1>
+	Result(krnlib::Ok<T1>&& rvalue) : ok_(std::move(rvalue)) { tag_ = kOkTag; }
 	/**
 	 * @brief 接收Ok, 表示有错误
-	 * @param err 内部存着错误信息
+	 * @param rvalue 右值
 	*/
-	Result(Err&& err) : errwp_(std::move(err)), okwp_() {}
-	~Result() {}
+	template<class E1>
+	Result(krnlib::Err<E1>&& rvalue) : err_(std::move(rvalue)) { tag_ = kErrTag; }
+	~Result() {
+		if (IsOk())
+			ok_.~Ok();
+		else
+			err_.~Err();
+	}
 
 	/**
 	 * @brief 是否执行成功
 	*/
 	bool IsOk() const noexcept {
-		return okwp_.IsValid();
+		return tag_ == kOkTag;
 	}
 
 	/**
@@ -50,21 +62,21 @@ public:
 	 * @brief 获取函数想要返回的数据
 	*/
 	T OkVal() const noexcept {
-		return okwp_.GetVal();
+		return ok_.val_;
 	}
 
 	/**
 	 * @brief 获取错误信息
 	*/
 	E ErrVal() const noexcept {
-		return errwp_.GetVal();
+		return err_.val_;
 	}
 
 	/**
-	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 调用op参数并传入Err中的数据
+	 * @brief 如果Ok, 返回Ok中的数据; 否则调用op参数并传入Err中的数据
 	 * @param op 可调用对象, 接收Err的数据
 	*/
-	T UnwrapOrElse(const std::function<void(E)>& op) {
+	T UnwrapOrElse(const krnlib::function<void(E)>& op) const {
 		if (IsOk())
 			return OkVal();
 		else
@@ -73,10 +85,10 @@ public:
 	}
 
 	/**
-	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 抛出异常
+	 * @brief 如果Ok, 返回Ok中的数据; 否则抛出异常
 	 * @param msg 异常信息
 	*/
-	T Expect(const char* msg) {
+	T Expect(const char* msg) const {
 		if (IsOk())
 			return OkVal();
 		else
@@ -84,17 +96,31 @@ public:
 	}
 
 	/**
-	 * @brief 如果Ok, 返回Ok中的数据; 如果Err, 抛出异常
+	 * @brief 如果Ok, 返回Ok中的数据; 否则抛出异常
 	*/
-	T Unwrap() {
+	T Unwrap() const {
 		if (IsOk())
 			return OkVal();
 		else
 			std::_Xruntime_error("Error occurred!");
 	}
 
+	/**
+	 * @brief 如果Ok, 返回Ok中的数据; 否则返回设定的默认值
+	 * @param val 默认值
+	*/
+	T Default(const T& val) const noexcept {
+		if (IsOk())
+			return OkVal();
+		else
+			return val;
+	}
+
 private:
-	details::SeniorEnumElemWrapper<T, Ok> okwp_;
-	details::SeniorEnumElemWrapper<E, Err> errwp_;
+	char tag_;
+	union {
+		Ok ok_;
+		Err err_;
+	};
 };
 }

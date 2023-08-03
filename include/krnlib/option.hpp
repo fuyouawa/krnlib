@@ -1,12 +1,9 @@
 ﻿#pragma once
-#include "krnlib/detail/senior_enum_elem.hpp"
+#include "krnlib/detail/simu_enum_elem.hpp"
 
 namespace krnlib {
-namespace details {
-struct SomeTag {};
-}
 
-using Some = details::SeniorEnumElemValue<details::SomeTag>;
+KRNLIB_SIMU_ENUM_ELEM(Some)
 struct None {};
 
 /**
@@ -17,21 +14,33 @@ template<class T>
 class Option
 {
 public:
+	using Some = Some<T>;
+
+	enum Tag {
+		kSomeTag,
+		kNoneTag
+	};
 	/**
 	 * @brief 接收Some, 表示有值
+	 * @param rvalue 右值
 	*/
-	Option(Some&& some) : somewp_(std::move(some)) {}
+	template<class T1>
+	Option(krnlib::Some<T1>&& rvalue) : some_(std::move(rvalue)) { tag_ = kSomeTag; }
 	/**
 	 * @brief 接收None, 表示空
 	*/
-	Option(None) : somewp_() {}
-	~Option() {}
+	Option(None) { tag_ = kNoneTag; }
+	~Option() {
+		if (IsSome()) {
+			some_.~Some();
+		}
+	}
 
 	/**
 	 * @brief 是否有值
 	*/
 	bool IsSome() const noexcept {
-		return somewp_.IsValid();
+		return tag_ == kSomeTag;
 	}
 
 	/**
@@ -44,11 +53,25 @@ public:
 	/**
 	 * @brief 获取值
 	*/
-	T SomeVal() noexcept {
-		return somewp_.GetVal();
+	T SomeVal() const noexcept {
+		return some_.val_;
+	}
+
+	/**
+	 * @brief 如果有值, 返回数据; 否则返回设定的默认值
+	 * @param val 默认值
+	*/
+	T Default(const T& val) const noexcept {
+		if (IsSome())
+			return SomeVal();
+		else
+			return val;
 	}
 
 private:
-	details::SeniorEnumElemWrapper<T, Some> somewp_;
+	char tag_;
+	union {
+		Some some_;
+	};
 };
 }

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\krnlib\detail\senior_enum_elem.hpp">
+    <ClInclude Include="..\include\krnlib\detail\simu_enum_elem.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\include\krnlib\functional.hpp">
