@@ -30,9 +30,6 @@
     <ClInclude Include="..\include\krnlib\detail\basic\algorithm.hpp">
       <Filter>Header Files\detail\basic</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\basic\type_traits.hpp">
-      <Filter>Header Files\detail\basic</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\krnlib\string.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
