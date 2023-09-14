@@ -108,7 +108,6 @@ _NODISCARD bool GetNegative(ElemT ch) {
 
 template<class RetT, class ElemT>
 _NODISCARD RetT StrintToIntegral(const BasicString<ElemT>& str, size_t* idx, int base, const char* invalid_argument_err, const char* out_of_range_err) {
-    StaticAssertFloatingPoint<RetT>();
     static_assert(std::is_integral_v<RetT>, "RetT must be integral");
     constexpr bool is_wchar_elem = std::is_same_v<ElemT, wchar_t>;
     constexpr bool is_unsigned_ret = std::is_unsigned_v<RetT>;

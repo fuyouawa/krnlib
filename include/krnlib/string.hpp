@@ -12,7 +12,6 @@ using wstring = std::basic_string<wchar_t, std::char_traits<wchar_t>, allocator<
 */
 template<class T>
 _NODISCARD inline krnlib::string to_string(T val) {
-    StaticAssertFloatingPoint<T>();
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<char>(val);
     else
@@ -26,7 +25,6 @@ _NODISCARD inline krnlib::string to_string(T val) {
 */
 template<class T>
 _NODISCARD inline krnlib::wstring to_wstring(T val) {
-    StaticAssertFloatingPoint<T>();
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<wchar_t>(val);
     else
