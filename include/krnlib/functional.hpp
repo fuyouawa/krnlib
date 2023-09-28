@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <type_traits>
+#include <fustd/generic/type_traits.hpp>
 
 namespace krnlib {
 namespace details {
@@ -37,7 +37,8 @@ public:
 	* 自动根据FuncTTemp的类型执行赋值或者右值引用
 	* 使用enable_if_t确保FuncTTemp不是自身的类型, 否则会陷入无限递归
 	*/
-	template<class NewCallableT, std::enable_if_t<!std::is_same_v<CallableObjImpl, std::decay_t<NewCallableT>>, int> = 0>
+	template<class NewCallableT>
+	requires !fustd::is_decay_same_v<CallableObjImpl, NewCallableT>
 	CallableObjImpl(NewCallableT&& new_call) : call_(std::forward<NewCallableT>(new_call)) {}
 
 private:
