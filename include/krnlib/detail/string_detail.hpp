@@ -1,6 +1,8 @@
 #pragma once
+#ifdef WINNT
 #define NTSTRSAFE_LIB
 #include <ntstrsafe.h>
+#endif // WINNT
 #include <string>
 #include <string_view>
 #include <tuple>
