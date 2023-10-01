@@ -1,6 +1,6 @@
 #pragma once
 #include "krnlib/memory.hpp"
-#include "krnlib/detail/basic/algorithm.hpp"
+#include "krnlib/detail/algorithm.hpp"
 
 namespace krnlib {
 template <class T>

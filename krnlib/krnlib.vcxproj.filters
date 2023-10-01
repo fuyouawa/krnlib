@@ -10,9 +10,6 @@
     <Filter Include="Header Files\detail">
       <UniqueIdentifier>{18e7f45b-6c3f-4054-bd9e-2b1b2971771c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\detail\basic">
-      <UniqueIdentifier>{792e3554-1218-4f33-9fdd-e0257e333d21}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\krnlib\functional.hpp">
@@ -27,9 +24,6 @@
     <ClInclude Include="..\include\krnlib\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\basic\algorithm.hpp">
-      <Filter>Header Files\detail\basic</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\krnlib\string.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -37,6 +31,12 @@
       <Filter>Header Files\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\include\krnlib\detail\allocator.hpp">
+      <Filter>Header Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\iostream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\krnlib\detail\algorithm.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
   </ItemGroup>
