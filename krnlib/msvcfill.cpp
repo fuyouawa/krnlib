@@ -1,5 +1,6 @@
 ﻿#include <ntifs.h>
 #include <stdexcept>
+#include <functional>
 
 namespace std {
 namespace details {
@@ -63,9 +64,13 @@ extern "C" void __cdecl __std_exception_destroy(
     _Data->_DoFree = false;
 }
 extern "C" void __cdecl _invalid_parameter_noinfo(void) {
-    // TODO _invalid_parameter_noinfo
+    _Xruntime_error("_invalid_parameter_noinfo");
 }
 extern "C" void __cdecl _invalid_parameter_noinfo_noreturn(void) {
-    // TODO _invalid_parameter_noinfo_noreturn
+    _Xruntime_error("_invalid_parameter_noinfo_noreturn");
+}
+
+extern "C++" [[noreturn]] void __cdecl _Xbad_function_call() {
+    throw std::bad_function_call();
 }
 }
