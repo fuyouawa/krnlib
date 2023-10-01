@@ -1,4 +1,7 @@
 #pragma once
+#if __cplusplus >= 202002L
+#pragma message("WARNING: There's no need to use this hpp file in C++20. You can directly use the standard library!")
+#endif
 #ifdef WINNT
 #include <ntifs.h>
 #endif
