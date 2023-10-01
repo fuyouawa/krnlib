@@ -1,0 +1,3 @@
+[submodule "third-party/krnfmt"]
+	path = third-party/krnfmt
+	url = https://github.com/fuyouawa/krnfmt
