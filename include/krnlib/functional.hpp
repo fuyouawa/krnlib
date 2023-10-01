@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <fustd/generic/type_traits.hpp>
+#include <type_traits>
 
 namespace krnlib {
 namespace details {

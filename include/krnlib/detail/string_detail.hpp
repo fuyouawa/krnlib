@@ -5,7 +5,6 @@
 #include <string_view>
 #include <tuple>
 #include <limits>
-#include <fustd/generic/type_traits.hpp>
 #include "krnlib/detail/allocator.hpp"
 
 namespace krnlib {
