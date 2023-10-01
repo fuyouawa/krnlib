@@ -38,7 +38,7 @@ public:
 	* 使用enable_if_t确保FuncTTemp不是自身的类型, 否则会陷入无限递归
 	*/
 	template<class NewCallableT>
-	requires !fustd::is_decay_same_v<CallableObjImpl, NewCallableT>
+	requires !std::is_same_v<std::decay_t<CallableObjImpl>, std::decay_t<NewCallableT>>
 	CallableObjImpl(NewCallableT&& new_call) : call_(std::forward<NewCallableT>(new_call)) {}
 
 private:
