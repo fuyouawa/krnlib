@@ -157,7 +157,7 @@
       <RuntimeLibrary>
       </RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(VC_IncludePath);$(SolutionDir)include\;$(SolutionDir)third-party\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VC_IncludePath);$(SolutionDir)include\;$(SolutionDir)third-party\;E:\Code\C++\_Packages\Analyser\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
   </ItemDefinitionGroup>

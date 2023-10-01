@@ -62,4 +62,10 @@ extern "C" void __cdecl __std_exception_destroy(
     _Data->_What = nullptr;
     _Data->_DoFree = false;
 }
+extern "C" void __cdecl _invalid_parameter_noinfo(void) {
+    // TODO _invalid_parameter_noinfo
+}
+extern "C" void __cdecl _invalid_parameter_noinfo_noreturn(void) {
+    // TODO _invalid_parameter_noinfo_noreturn
+}
 }

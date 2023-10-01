@@ -1,16 +1,19 @@
 #pragma once
 #include "krnlib/detail/string_detail.hpp"
+#include <fustd/generic/type_traits.hpp>
 
 namespace krnlib {
-using string = std::basic_string<char, std::char_traits<char>, allocator<char>>;
-using wstring = std::basic_string<wchar_t, std::char_traits<wchar_t>, allocator<wchar_t>>;
+using string = basic_string<char>;
+using wstring = basic_string<wchar_t>;
+
+
 
 /**
  * @brief 将整数转换为字符串
  * @tparam T 整数类型
  * @param val 要转换的数值
 */
-template<class T>
+template<fustd::integeral_t T>
 _NODISCARD inline krnlib::string to_string(T val) {
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<char>(val);
@@ -23,13 +26,15 @@ _NODISCARD inline krnlib::string to_string(T val) {
  * @tparam T 整数类型
  * @param val 要转换的数值
 */
-template<class T>
+template<fustd::integeral_t T>
 _NODISCARD inline krnlib::wstring to_wstring(T val) {
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<wchar_t>(val);
     else
         return details::IntegralToString<wchar_t>(val);
 }
+
+
 
 /**
  * @brief 将字符串转换为int类型数值

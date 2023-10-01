@@ -1,16 +1,20 @@
 #pragma once
+#define NTSTRSAFE_LIB
+#include <ntstrsafe.h>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <limits>
+#include <fustd/generic/type_traits.hpp>
 #include "krnlib/detail/allocator.hpp"
 
 namespace krnlib {
-namespace details {
-template<class ElemT>
-using BasicString = std::basic_string<ElemT, std::char_traits<ElemT>, krnlib::allocator<ElemT>>;
+template <class ElemT, class TraitsT = std::char_traits<ElemT>, class AllocT = krnlib::allocator<ElemT>>
+using basic_string = std::basic_string<ElemT, TraitsT, AllocT>;
 
+namespace details {
 template <class ElemT, class ValueT>
-_NODISCARD BasicString<ElemT> IntegralToString(const ValueT val) {
+_NODISCARD basic_string<ElemT> IntegralToString(const ValueT val) {
     // convert val to string
     static_assert(std::is_integral_v<ValueT>, "ValueT must be integral");
     using UValueT = std::make_unsigned_t<ValueT>;
@@ -25,18 +29,18 @@ _NODISCARD BasicString<ElemT> IntegralToString(const ValueT val) {
     else {
         rnext = std::_UIntegral_to_buff(rnext, uval);
     }
-    return BasicString<ElemT>(rnext, buf_end);
+    return basic_string<ElemT>(rnext, buf_end);
 }
 
 template <class ElemT, class ValueT>
-_NODISCARD BasicString<ElemT> UIntegralToString(const ValueT val) {
+_NODISCARD basic_string<ElemT> UIntegralToString(const ValueT val) {
     // convert val to string
     static_assert(std::is_integral_v<ValueT>, "ValueT must be integral");
     static_assert(std::is_unsigned_v<ValueT>, "ValueT must be unsigned");
     ElemT buf[21]; // can hold 2^64 - 1, plus NUL
     ElemT* const buf_end = std::end(buf);
     ElemT* const rnext = std::_UIntegral_to_buff(buf_end, val);
-    return BasicString<ElemT>(rnext, buf_end);
+    return basic_string<ElemT>(rnext, buf_end);
 }
 
 template<class ElemT>
@@ -107,7 +111,7 @@ _NODISCARD bool GetNegative(ElemT ch) {
 }
 
 template<class RetT, class ElemT>
-_NODISCARD RetT StrintToIntegral(const BasicString<ElemT>& str, size_t* idx, int base, const char* invalid_argument_err, const char* out_of_range_err) {
+_NODISCARD RetT StrintToIntegral(const basic_string<ElemT>& str, size_t* idx, int base, const char* invalid_argument_err, const char* out_of_range_err) {
     static_assert(std::is_integral_v<RetT>, "RetT must be integral");
     constexpr bool is_wchar_elem = std::is_same_v<ElemT, wchar_t>;
     constexpr bool is_unsigned_ret = std::is_unsigned_v<RetT>;
