@@ -1,8 +1,5 @@
 #pragma once
-#include "krnlib/detail/string_detail.hpp"
-#if _MSVC_LANG >= 202002L
-#pragma message("WARNING: There's no need to use this hpp file in C++20. You can directly use the standard library!")
-#endif
+#include "krnlib/detail/string_details.hpp"
 namespace krnlib {
 using string = basic_string<char>;
 using wstring = basic_string<wchar_t>;
@@ -135,5 +132,13 @@ _NODISCARD inline long long stoll(const krnlib::wstring& str, size_t* idx = null
 */
 _NODISCARD inline unsigned long long stoull(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
+}
+
+inline krnlib::string UnicodeStringToStlString(PUNICODE_STRING ustr) {
+    ANSI_STRING astr;
+    RtlUnicodeStringToAnsiString(&astr, ustr, TRUE);
+    krnlib::string res{astr.Buffer, astr.Length};
+    RtlFreeAnsiString(&astr);
+    return res;
 }
 }

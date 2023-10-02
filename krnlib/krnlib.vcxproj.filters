@@ -27,7 +27,7 @@
     <ClInclude Include="..\include\krnlib\string.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\string_detail.hpp">
+    <ClInclude Include="..\include\krnlib\detail\string_details.hpp">
       <Filter>Header Files\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\include\krnlib\detail\allocator.hpp">

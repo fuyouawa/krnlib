@@ -37,7 +37,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\krnlib\detail\algorithm.hpp" />
     <ClInclude Include="..\include\krnlib\detail\allocator.hpp" />
-    <ClInclude Include="..\include\krnlib\detail\string_detail.hpp" />
+    <ClInclude Include="..\include\krnlib\detail\string_details.hpp" />
     <ClInclude Include="..\include\krnlib\functional.hpp" />
     <ClInclude Include="..\include\krnlib\initializer_list.hpp" />
     <ClInclude Include="..\include\krnlib\iostream.hpp" />
