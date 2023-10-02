@@ -1,5 +1,7 @@
 #pragma once
 #include "krnlib/detail/string_details.hpp"
+#include "krnfmt/format.h"
+
 namespace krnlib {
 using string = basic_string<char>;
 using wstring = basic_string<wchar_t>;
@@ -134,7 +136,7 @@ _NODISCARD inline unsigned long long stoull(const krnlib::wstring& str, size_t* 
     return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
 }
 
-inline krnlib::string UnicodeStringToStlString(PUNICODE_STRING ustr) {
+inline krnlib::string UnicodeStringToStlString(PCUNICODE_STRING ustr) {
     ANSI_STRING astr;
     RtlUnicodeStringToAnsiString(&astr, ustr, TRUE);
     krnlib::string res{astr.Buffer, astr.Length};
@@ -142,3 +144,15 @@ inline krnlib::string UnicodeStringToStlString(PUNICODE_STRING ustr) {
     return res;
 }
 }
+
+template<>
+struct fmt::formatter<UNICODE_STRING> {
+    constexpr auto parse(fmt::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const UNICODE_STRING& str, FormatContext& ctx) {
+        return fmt::format_to(ctx.out(), "{}", krnlib::UnicodeStringToStlString(&str));
+    }
+};
