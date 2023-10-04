@@ -2,7 +2,8 @@
 #include "krnlib/detail/string_details.hpp"
 #include "krnfmt/format.h"
 
-namespace krnlib {
+KRNLIB_BEGIN_NAMESPACE
+
 using string = basic_string<char>;
 using wstring = basic_string<wchar_t>;
 
@@ -12,7 +13,7 @@ using wstring = basic_string<wchar_t>;
  * @param val 要转换的数值
 */
 template<class T>
-_NODISCARD inline krnlib::string to_string(T val) {
+_NODISCARD inline string to_string(T val) {
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<char>(val);
     else
@@ -25,7 +26,7 @@ _NODISCARD inline krnlib::string to_string(T val) {
  * @param val 要转换的数值
 */
 template<class T>
-_NODISCARD inline krnlib::wstring to_wstring(T val) {
+_NODISCARD inline wstring to_wstring(T val) {
     if constexpr (std::is_unsigned_v<std::decay_t<T>>)
         return details::UIntegralToString<wchar_t>(val);
     else
@@ -40,7 +41,7 @@ _NODISCARD inline krnlib::wstring to_wstring(T val) {
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline int stoi(const krnlib::string& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline int stoi(const string& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<int>(str, idx, base, "invalid stoi argument", "stoi argument out of range");
 }
 
@@ -50,7 +51,7 @@ _NODISCARD inline int stoi(const krnlib::string& str, size_t* idx = nullptr, int
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline long stol(const krnlib::string& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline long stol(const string& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<long>(str, idx, base, "invalid stol argument", "stol argument out of range");
 }
 
@@ -60,7 +61,7 @@ _NODISCARD inline long stol(const krnlib::string& str, size_t* idx = nullptr, in
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline unsigned long stoul(const krnlib::string& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline unsigned long stoul(const string& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<unsigned long>(str, idx, base, "invalid stoul argument", "stoul argument out of range");
 }
 
@@ -70,7 +71,7 @@ _NODISCARD inline unsigned long stoul(const krnlib::string& str, size_t* idx = n
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline long long stoll(const krnlib::string& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline long long stoll(const string& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<long long>(str, idx, base, "invalid stoll argument", "stoll argument out of range");
 }
 
@@ -80,7 +81,7 @@ _NODISCARD inline long long stoll(const krnlib::string& str, size_t* idx = nullp
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline unsigned long long stoull(const krnlib::string& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline unsigned long long stoull(const string& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
 }
 
@@ -92,7 +93,7 @@ _NODISCARD inline unsigned long long stoull(const krnlib::string& str, size_t* i
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline int stoi(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline int stoi(const wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<int>(str, idx, base, "invalid stoi argument", "stoi argument out of range");
 }
 
@@ -102,7 +103,7 @@ _NODISCARD inline int stoi(const krnlib::wstring& str, size_t* idx = nullptr, in
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline long stol(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline long stol(const wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<long>(str, idx, base, "invalid stol argument", "stol argument out of range");
 }
 
@@ -112,7 +113,7 @@ _NODISCARD inline long stol(const krnlib::wstring& str, size_t* idx = nullptr, i
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline unsigned long stoul(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline unsigned long stoul(const wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<unsigned long>(str, idx, base, "invalid stoul argument", "stoul argument out of range");
 }
 
@@ -122,7 +123,7 @@ _NODISCARD inline unsigned long stoul(const krnlib::wstring& str, size_t* idx = 
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline long long stoll(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline long long stoll(const wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<long long>(str, idx, base, "invalid stoll argument", "stoll argument out of range");
 }
 
@@ -132,18 +133,19 @@ _NODISCARD inline long long stoll(const krnlib::wstring& str, size_t* idx = null
  * @param idx 可选参数，指向转换结束的位置
  * @param base 可选参数，数值的进制
 */
-_NODISCARD inline unsigned long long stoull(const krnlib::wstring& str, size_t* idx = nullptr, int base = 10) {
+_NODISCARD inline unsigned long long stoull(const wstring& str, size_t* idx = nullptr, int base = 10) {
     return details::StrintToIntegral<unsigned long long>(str, idx, base, "invalid stoull argument", "stoull argument out of range");
 }
 
-inline krnlib::string UnicodeStringToStlString(PCUNICODE_STRING ustr) {
+inline string UnicodeStringToStlString(PCUNICODE_STRING ustr) {
     ANSI_STRING astr;
     RtlUnicodeStringToAnsiString(&astr, ustr, TRUE);
-    krnlib::string res{astr.Buffer, astr.Length};
+    string res{astr.Buffer, astr.Length};
     RtlFreeAnsiString(&astr);
     return res;
 }
-}
+
+KRNLIB_END_NAMESPACE
 
 template<>
 struct fmt::formatter<UNICODE_STRING> {
@@ -153,6 +155,6 @@ struct fmt::formatter<UNICODE_STRING> {
 
     template <typename FormatContext>
     auto format(const UNICODE_STRING& str, FormatContext& ctx) {
-        return fmt::format_to(ctx.out(), "{}", krnlib::UnicodeStringToStlString(&str));
+        return fmt::format_to(ctx.out(), "{}", _KRNLIB UnicodeStringToStlString(&str));
     }
 };

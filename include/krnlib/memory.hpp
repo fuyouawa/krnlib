@@ -3,8 +3,10 @@
 #include <ntifs.h>
 #endif
 #include <memory>
+#include <krnlib/detail/algorithm.hpp>
 
-namespace krnlib {
+KRNLIB_BEGIN_NAMESPACE
+
 /**
  * @brief 分配指定数量的对象内存(sizeof(T) * count)
  * @tparam T 对象类型
@@ -31,4 +33,5 @@ template<class T>
 inline void Destroy(T* ptr) {
     ptr->~T();
 }
-}
+
+KRNLIB_END_NAMESPACE

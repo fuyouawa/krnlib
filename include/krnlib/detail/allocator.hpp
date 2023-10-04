@@ -2,7 +2,8 @@
 #include "krnlib/memory.hpp"
 #include "krnlib/detail/algorithm.hpp"
 
-namespace krnlib {
+KRNLIB_BEGIN_NAMESPACE
+
 namespace details {
     template <class T>
     class allocator {
@@ -51,4 +52,5 @@ using allocator = std::allocator<T>;
 #else
 using allocator = details::allocator<T>;
 #endif
-}
+
+KRNLIB_END_NAMESPACE

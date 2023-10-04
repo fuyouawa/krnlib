@@ -9,8 +9,9 @@
 #include <limits>
 #include "krnlib/detail/allocator.hpp"
 
-namespace krnlib {
-template <class ElemT, class TraitsT = std::char_traits<ElemT>, class AllocT = krnlib::allocator<ElemT>>
+KRNLIB_BEGIN_NAMESPACE
+
+template <class ElemT, class TraitsT = std::char_traits<ElemT>, class AllocT = allocator<ElemT>>
 using basic_string = std::basic_string<ElemT, TraitsT, AllocT>;
 
 namespace details {
@@ -151,4 +152,5 @@ _NODISCARD RetT StrintToIntegral(const basic_string<ElemT>& str, size_t* idx, in
         return negative ? -res : res;
 }
 }
-}
+
+KRNLIB_END_NAMESPACE

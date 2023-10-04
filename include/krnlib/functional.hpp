@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include <type_traits>
+#include <krnlib/detail/algorithm.hpp>
 
-namespace krnlib {
+KRNLIB_BEGIN_NAMESPACE
+
 namespace details {
 /* ---------------------------------------------------------------------------------------------
 * 1: 将可调用对象封装为一个类, 方便操作
@@ -208,4 +210,5 @@ public:
 	}
 	~function() {}
 };
-}
+
+KRNLIB_END_NAMESPACE

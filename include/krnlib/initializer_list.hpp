@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include <type_traits>
+#include <krnlib/detail/algorithm.hpp>
 
-namespace krnlib {
+KRNLIB_BEGIN_NAMESPACE
+
 /*
 * 模拟std::initializer_list
 */
@@ -31,4 +33,5 @@ private:
     T* buffer_;
     size_t size_;
 };
-}
+
+KRNLIB_END_NAMESPACE
