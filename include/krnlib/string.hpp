@@ -155,6 +155,6 @@ struct fmt::formatter<UNICODE_STRING> {
 
     template <typename FormatContext>
     auto format(const UNICODE_STRING& str, FormatContext& ctx) {
-        return fmt::format_to(ctx.out(), "{}", _KRNLIB UnicodeStringToStlString(&str));
+        return fmt::format_to(ctx.out(), "{}", KRNLIB UnicodeStringToStlString(&str));
     }
 };

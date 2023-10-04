@@ -31,8 +31,8 @@
 #endif // !DebugPrintf
 
 
-#ifndef _KRNLIB
-#define _KRNLIB krnlib::
+#ifndef KRNLIB
+#define KRNLIB krnlib::
 #define KRNLIB_BEGIN_NAMESPACE namespace krnlib {
 #define KRNLIB_END_NAMESPACE }
 #endif // !_KRNLIB
