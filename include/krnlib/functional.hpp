@@ -39,7 +39,7 @@ public:
 	* 自动根据FuncTTemp的类型执行赋值或者右值引用
 	* 使用enable_if_t确保FuncTTemp不是自身的类型, 否则会陷入无限递归
 	*/
-	template<class NewCallableT, std::enable_if_t<!std::is_same_v<std::decay_t<CallableObjImpl>, std::decay_t<NewCallableT>>, int> = 0>
+	template<class NewCallableT, std::enable_if_t<!std::is_same_v<CallableObjImpl, NewCallableT>, int> = 0>
 	CallableObjImpl(NewCallableT&& new_call) : call_(std::forward<NewCallableT>(new_call)) {}
 
 private:
@@ -81,7 +81,7 @@ public:
 protected:
 	// 判断是否是可调用对象, 并且传入的NewCallableT和声明的调用方式相同
 	template <class NewCallableT, class function>
-	using EnableIfAllowableCallT = std::enable_if_t<std::conjunction_v<std::negation<std::is_same<std::_Remove_cvref_t<NewCallableT>, function>>,
+	using EnableIfAllowableCallT = std::enable_if_t<std::conjunction_v<std::negation<std::is_same<std::decay_t<NewCallableT>, function>>,
 		std::_Is_invocable_r<RetT, std::decay_t<NewCallableT>, ArgsT...>>,
 		int>;
 	/*
@@ -157,13 +157,11 @@ template <class RetT, class... ArgsT>
 struct GetFunctionImpl<RetT(ArgsT...)> {
 	using Type = FuncBaseImpl<RetT, ArgsT...>;
 };
-}
-
 
 template<class CallableT>
-class function : public details::GetFunctionImpl<CallableT>::Type {
+class function : public GetFunctionImpl<CallableT>::Type {
 public:
-	using InheritedT = typename details::GetFunctionImpl<CallableT>::Type;
+	using InheritedT = typename GetFunctionImpl<CallableT>::Type;
 
 	function() noexcept {}
 	function(nullptr_t) noexcept {}
@@ -210,5 +208,13 @@ public:
 	}
 	~function() {}
 };
+}
+
+template<class CallableT>
+#if _MSVC_LANG >= 202002L
+using function = std::function<CallableT>;
+#else
+using function = details::function<CallableT>;
+#endif
 
 KRNLIB_END_NAMESPACE
