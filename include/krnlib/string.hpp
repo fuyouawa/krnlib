@@ -9,6 +9,10 @@ struct fmt::formatter<UNICODE_STRING> {
 
     template <typename FormatContext>
     auto format(const UNICODE_STRING& str, FormatContext& ctx) {
-        return fmt::format_to(ctx.out(), "{}", KRNLIB UnicodeStringToStlString(&str));
+        ANSI_STRING astr;
+        RtlUnicodeStringToAnsiString(&astr, &str, TRUE);
+        std::string stlstr{astr.Buffer, astr.Length};
+        RtlFreeAnsiString(&astr);
+        return fmt::format_to(ctx.out(), "{}", stlstr);
     }
 };
