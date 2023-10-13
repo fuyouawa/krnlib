@@ -35,14 +35,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\krnlib\detail\algorithm.hpp" />
-    <ClInclude Include="..\include\krnlib\detail\allocator.hpp" />
-    <ClInclude Include="..\include\krnlib\detail\string_details.hpp" />
-    <ClInclude Include="..\include\krnlib\functional.hpp" />
-    <ClInclude Include="..\include\krnlib\initializer_list.hpp" />
     <ClInclude Include="..\include\krnlib\iostream.hpp" />
     <ClInclude Include="..\include\krnlib\memory.hpp" />
-    <ClInclude Include="..\include\krnlib\stl_container.hpp" />
     <ClInclude Include="..\include\krnlib\string.hpp" />
   </ItemGroup>
   <ItemGroup>

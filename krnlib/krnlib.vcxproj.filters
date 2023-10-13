@@ -7,37 +7,16 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{62708ab6-22a7-44e7-bb83-3649c77b6286}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\detail">
-      <UniqueIdentifier>{18e7f45b-6c3f-4054-bd9e-2b1b2971771c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\krnlib\functional.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\krnlib\stl_container.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\krnlib\initializer_list.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\krnlib\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\krnlib\string.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\string_details.hpp">
-      <Filter>Header Files\detail</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\allocator.hpp">
-      <Filter>Header Files\detail</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\krnlib\iostream.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\krnlib\detail\algorithm.hpp">
-      <Filter>Header Files\detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
