@@ -21,9 +21,9 @@
 #endif // !DebugPrintf
 
 namespace krnlib {
-template<class... ArgsT>
-void Print(fmt::format_string<ArgsT...> fmt, ArgsT&&... args) {
-	auto msg = fmt::format(fmt, std::forward<ArgsT>(args)...);
+template<class... ArgsType>
+void Print(fmt::format_string<ArgsType...> fmt, ArgsType&&... args) {
+	auto msg = fmt::format(fmt, std::forward<ArgsType>(args)...);
 	DebugPrintf(msg.c_str());
 }
 }
