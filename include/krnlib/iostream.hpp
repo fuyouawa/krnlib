@@ -15,12 +15,11 @@
 #endif // WINNT
 #endif // !KRNLIB_FMT
 
-#ifndef KRNLIB_DEBUG
 #if defined(DBG) || defined(_DEBUG)
 #define KRNLIB_DEBUG
+#elif defined(KRNLIB_DEBUG)
+#undef KRNLIB_DEBUG
 #endif
-#endif // !KRNLIB_DEBUG
-
 
 
 namespace krnlib {
