@@ -15,6 +15,13 @@
 #endif // WINNT
 #endif // !KRNLIB_FMT
 
+#ifndef KRNLIB_DEBUG
+#if defined(DBG) || defined(_DEBUG)
+#define KRNLIB_DEBUG
+#endif
+#endif // !KRNLIB_DEBUG
+
+
 
 namespace krnlib {
 template<class... ArgsType>
@@ -29,8 +36,8 @@ void Print(std::string_view fmt, ArgsType&&... args) {
 
 template<class... ArgsType>
 void DebugPrint(std::string_view fmt, ArgsType&&... args) {
-#ifdef DBG
+#ifdef KRNLIB_DEBUG
 	Print(fmt, std::forward<ArgsType>(args)...);
-#endif // DBG
+#endif // KRNLIB_DEBUG
 }
 }
