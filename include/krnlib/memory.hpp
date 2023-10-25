@@ -11,7 +11,7 @@ namespace krnlib {
  * @param count ÊýÁ¿
 */
 template<class T>
-inline T* Allocate(size_t count) {
+[[nodiscard]] inline T* Allocate(size_t count) {
     return (T*)operator new(sizeof(T) * count);
 }
 

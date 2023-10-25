@@ -1,4 +1,5 @@
 #pragma once
+#ifdef WINNT
 #include "krnfmt/format.h"
 
 template<>
@@ -16,3 +17,4 @@ struct fmt::formatter<UNICODE_STRING> {
         return fmt::format_to(ctx.out(), "{}", stlstr);
     }
 };
+#endif // WINNT
