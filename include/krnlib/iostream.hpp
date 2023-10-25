@@ -27,7 +27,7 @@ template<class... ArgsType>
 void Print(std::string_view fmt, ArgsType&&... args) {
 	auto msg = KRNLIB_FMT vformat(fmt, KRNLIB_FMT make_format_args(std::forward<ArgsType>(args)...));
 #ifdef WINNT
-	DbgPrintEx((DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, msg.c_str()));
+	DbgPrintEx(DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, msg.c_str());
 #else
 	printf(msg.c_str());
 #endif // WINNT
