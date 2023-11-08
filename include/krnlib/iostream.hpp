@@ -23,7 +23,7 @@
 
 
 namespace krnlib {
-template<class... ArgsType>
+template<typename... ArgsType>
 void Print(std::string_view fmt, ArgsType&&... args) {
 	auto msg = KRNLIB_FMT vformat(fmt, KRNLIB_FMT make_format_args(args...));
 #ifdef WINNT
@@ -33,7 +33,7 @@ void Print(std::string_view fmt, ArgsType&&... args) {
 #endif // WINNT
 }
 
-template<class... ArgsType>
+template<typename... ArgsType>
 void DebugPrint(std::string_view fmt, ArgsType&&... args) {
 #ifdef KRNLIB_DEBUG
 	Print(fmt, std::forward<ArgsType>(args)...);

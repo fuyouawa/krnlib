@@ -10,7 +10,7 @@ namespace krnlib {
  * @tparam T 对象类型
  * @param count 数量
 */
-template<class T>
+template<typename T>
 [[nodiscard]] inline T* Allocate(size_t count) {
     return (T*)operator new(sizeof(T) * count);
 }
@@ -27,7 +27,7 @@ inline void Deallocate(void* ptr) {
  * @brief 对一块内存调用析构函数
  * @tparam T 对象类型
 */
-template<class T>
+template<typename T>
 inline void Destroy(T* ptr) {
     ptr->~T();
 }
